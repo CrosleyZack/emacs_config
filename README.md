@@ -1,0 +1,265 @@
+#+TITLE: Emacs configuration file
+#+AUTHOR: Zackary Crosley
+#+BABEL: :cache yes
+#+PROPERTY: header-args :tangle yes
+
+
+* Configuration
+** Set Personal Info
+    #+BEGIN_SRC emacs-lisp
+    (setq user-full-name "Zackary Crosley")
+    #+END_SRC
+** Meta
+
+    The following configuration found initially in =init.el= enables the
+    automatic bootstrapping process.
+
+    #+BEGIN_SRC emacs-lisp :tangle no
+      ;; This file replaces itself with the actual configuration at first run.
+      (require 'org)
+      (find-file (concat user-emacs-directory "init.org"))
+      (org-babel-tangle)
+      (load-file (concat user-emacs-directory "init.el"))
+      (byte-compile-file (concat user-emacs-directory "init.el"))
+    #+END_SRC
+
+    Automatically recompile =init.el= when =init.org= is changed, on save.
+
+    #+BEGIN_SRC emacs-lisp
+      (defun tangle-init ()
+        (when (equal (buffer-file-name)
+                     (expand-file-name (concat user-emacs-directory "init.org")))
+          ;; Avoid running hooks when tangling.
+          (let ((prog-mode-hook nil))
+            (org-babel-tangle)
+            (byte-compile-file (concat user-emacs-directory "init.el")))))
+
+      (add-hook 'after-save-hook 'tangle-init)
+    #+END_SRC
+
+** Package Management
+
+    Some basic packages are required.
+
+    #+BEGIN_SRC emacs-lisp
+      ; (require 'cl)
+      (require 'package)
+      (package-initialize)
+    #+END_SRC
+
+    Melpa has a large repository of the most popular packages.
+
+    #+BEGIN_SRC emacs-lisp
+      (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+      (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
+    #+END_SRC
+
+    The package =use-package= is great for managing packages. It's also nice to
+    ensure used packages are installed.
+
+    #+BEGIN_SRC emacs-lisp
+      (unless (package-installed-p 'use-package)
+        (package-refresh-contents)
+        (package-install 'use-package))
+      (require 'use-package)
+      (setq use-package-always-ensure t)
+    #+END_SRC
+
+** Custom Packages
+*** Helm
+
+    Better auto-completion for file searches.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package helm
+        :bind (("M-x" . helm-M-x)
+               ("C-x C-f" . helm-find-files)
+               ("C-x b" . helm-buffers-list)
+               ("C-x C-b" . helm-filtered-bookmarks))
+        :config
+        (helm-autoresize-mode t))
+    #+END_SRC
+
+*** Elpy
+
+    Extra Python development tools.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package elpy
+        :config
+        (elpy-enable)
+        (setq python-shell-interpreter "ipython"
+              python-shell-interpreter-args "-i --simple-prompt")
+        (pyvenv-workon "+")
+        (setq elpy-modules
+              '(elpy-module-sane-defaults
+                elpy-module-company
+                elpy-module-eldoc
+                ;; elpy-module-flymake
+                ;; elpy-module-highlight-indentation
+                elpy-module-pyvenv
+                elpy-module-yasnippet
+                elpy-module-django)))
+    #+END_SRC
+
+*** Projectile
+
+  Project management extras.
+
+  #+BEGIN_SRC emacs-lisp
+    (use-package projectile
+    :init
+    (setq projectile-enable-caching t)
+    :config
+    (projectile-mode))
+  #+END_SRC
+
+** Evil.
+*** Setup evil mode because VIM bindings are better.
+    #+BEGIN_SRC emacs-lisp
+      (use-package evil
+        :config
+        (evil-mode t))
+    #+END_SRC
+
+*** Include evil-leader backage w/ space as leader key.
+    #+BEGIN_SRC emacs-lisp
+      (use-package evil-leader
+        :init
+        (global-evil-leader-mode)
+        :config
+        (evil-leader/set-key 
+          "k" 'kill-buffer
+          "g" 'magit-status
+          "<up>" 'evil-numbers/inc-at-pt
+          "<down>" 'evil-numbers/dec-at-pt
+          "<left>" 'evil-window-left
+          "<right>" 'evil-window-right)
+        (evil-leader/set-leader "<SPC>"))
+    #+END_SRC
+
+*** evil commentary mode.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package evil-commentary
+        :config
+        (evil-commentary-mode))
+    #+END_SRC
+
+*** evil surround.
+
+    Emulation of vim surround to quickly reference surrounding characters.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package evil-surround
+        :init
+        (global-evil-surround-mode t))
+    #+END_SRC
+
+** Sane Defaults
+
+    Use default customization values that are more sane.
+
+    #+BEGIN_SRC emacs-lisp
+      (setq inhibit-startup-message t        ; No splash screen
+            initial-scratch-message nil      ; Clean scratch buffer
+            echo-keystrokes 0.1              ; Show keystrokes asap
+            auto-revert-interval 1           ; Refresh buffers fast
+            custom-file (make-temp-file "")  ; Discard customization's
+            dired-dwim-target t              ; Make dired more intelligent
+            default-input-method "TeX"       ; Use TeX when toggling input method
+            ring-bell-function 'ignore       ; Quiet
+            sentence-end-double-space nil)   ; No double space
+    #+END_SRC
+
+    Some customizations must be done with =setq-default= because they are
+    buffer-local.
+
+    #+BEGIN_SRC emacs-lisp
+      (setq-default indent-tabs-mode nil         ; Use spaces instead of tabs
+                    split-width-threshold 160    ; Split vertically by default
+                    split-height-threshold nil)  ; Split vertically by default
+
+    #+END_SRC
+
+    Show line numbers by default.
+
+    #+BEGIN_SRC emacs-lisp
+    (global-linum-mode 1)
+    #+END_SRC
+
+    Disable some of the default modes that aren't very useful.
+
+    #+BEGIN_SRC emacs-lisp
+      (dolist (mode
+               '(tool-bar-mode                ; No toolbars
+                 menu-bar-mode                ; No menu bar
+                 scroll-bar-mode              ; No scroll bars
+                 blink-cursor-mode))          ; No blinking cursor
+        (funcall mode 0))
+    #+END_SRC
+
+    Enable modes that are disabled by default.
+
+    #+BEGIN_SRC emacs-lisp
+      (dolist (mode
+               '(column-number-mode           ; Show column number in mode line
+                 delete-selection-mode        ; Replace selected text
+                 projectile-global-mode       ; Manage and navigate projects
+                 show-paren-mode              ; Highlight matching parentheses
+                 ; which-key-mode               ; Available keybindings in popup
+                 winner-mode))                ; Allow undo/redo on window operations
+        (funcall mode 1))
+    #+END_SRC
+
+    Set =utf-8= as preferred coding system.
+
+    #+BEGIN_SRC emacs-lisp
+      (set-language-environment "UTF-8")
+    #+END_SRC
+
+    Yes/no is so verbose. Answer questions with y/n.
+
+    #+BEGIN_SRC emacs-lisp
+      (fset 'yes-or-no-p 'y-or-n-p)
+    #+END_SRC
+
+    Don't allow trailing whitespace to end up in a saved file.
+
+    #+BEGIN_SRC emacs-lisp
+      (add-hook 'before-save-hook 'delete-trailing-whitespace)
+    #+END_SRC
+
+** Visual
+
+   Set the default font.
+
+   #+BEGIN_SRC emacs-lisp
+     (set-face-attribute 'default nil
+                         :family "Source Code Pro"
+                         :height 130
+                         :weight 'normal
+                         :width 'normal)
+   #+END_SRC
+
+   Use a doom theme
+
+   #+BEGIN_SRC emacs-lisp
+(use-package doom-themes
+  :config
+  (load-theme 'doom-one t)
+  (doom-themes-visual-bell-config)
+  (doom-themes-org-config))
+
+
+   #+END_SRC
+
+** EShell Setup
+
+    If this is a windows machine, set the default terminal to be WSL.
+
+    (cond
+      ((string-equal system-type "windows-nt") ; Microsoft Windows
+        (progn
+          (let (explicit-shell-file-name "C:/Windows/System32/bash.exe")
+              (shell)))))
