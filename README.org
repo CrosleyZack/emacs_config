@@ -1,1 +1,1 @@
-#+INCLUDE: "init.org"
+init.org
