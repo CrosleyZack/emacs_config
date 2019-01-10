@@ -10,11 +10,6 @@
     (setq user-full-name "Zackary Crosley")
     #+END_SRC
 
-** Generic Stuff
-    #+BEGIN_SRC emacs-lisp
-    (server-start)
-    #+END_SRC
-
 ** Meta
 
     The following configuration found initially in =init.el= enables the
@@ -128,7 +123,7 @@
         :init
         (global-evil-leader-mode)
         :config
-        (evil-leader/set-key 
+        (evil-leader/set-key
           "k" 'kill-buffer
           "g" 'magit-status
           "<up>" 'evil-numbers/inc-at-pt
