@@ -124,7 +124,6 @@
          (define-key evil-motion-state-map "\C-v" nil))
     #+END_SRC
 
-
 *** Include evil-leader backage w/ space as leader key.
     #+BEGIN_SRC emacs-lisp
       (use-package evil-leader
@@ -185,14 +184,13 @@
       (setq-default indent-tabs-mode nil         ; Use spaces instead of tabs
                     split-width-threshold 160    ; Split vertically by default
                     split-height-threshold nil)  ; Split vertically by default
-
     #+END_SRC
 
     Show line numbers by default.
 
     #+BEGIN_SRC emacs-lisp
-    (global-linum-mode 1)
-    (set-face-foreground 'linum "#888")
+      (global-linum-mode 1)
+      (set-face-foreground 'linum "#999")
     #+END_SRC
 
     Disable some of the default modes that aren't very useful.
@@ -237,6 +235,15 @@
       (add-hook 'before-save-hook 'delete-trailing-whitespace)
     #+END_SRC
 
+    Switch between windows using VIM bindings.
+
+    #+BEGIN_SRC emacs-lisp
+    (global-set-key (kbd "\C-w h") 'windmove-left)
+    (global-set-key (kbd "\C-w l") 'windmove-right)
+    (global-set-key (kbd "\C-w j") 'windmove-up)
+    (global-set-key (kbd "\C-w k") 'windmove-down)
+    #+END_SRC
+
 ** Visual
 
    Set the default font.
@@ -249,16 +256,15 @@
                          :width 'normal)
    #+END_SRC
 
-   Use a doom theme
+   Use a Nord theme.
 
    #+BEGIN_SRC emacs-lisp
-(use-package doom-themes
+(use-package nord-theme
   :config
-  (load-theme 'doom-one t)
-  (doom-themes-visual-bell-config)
-  (doom-themes-org-config))
-
-
+  (setq nord-comment-brightness 15); Make comments easier to see
+  (setq nord-region-highlight "snowstorm")
+  (setq nord-uniform-mode-lines t)
+  (load-theme 'nord t))
    #+END_SRC
 
 ** EShell Setup
