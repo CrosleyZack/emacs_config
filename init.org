@@ -117,6 +117,14 @@
         (evil-mode t))
     #+END_SRC
 
+*** Prevent overwriting of paste, as visual rectangle isn't really useful anyway.
+
+    #+BEGIN_SRC emacs-lisp
+    (eval-after-load "evil-maps"
+         (define-key evil-motion-state-map "\C-v" nil))
+    #+END_SRC
+
+
 *** Include evil-leader backage w/ space as leader key.
     #+BEGIN_SRC emacs-lisp
       (use-package evil-leader
@@ -145,6 +153,13 @@
       (use-package evil-surround
         :init
         (global-evil-surround-mode t))
+    #+END_SRC
+
+*** Relative line numbers for evil
+    #+BEGIN_SRC emacs-lisp
+    (use-package linum-relative
+    :config
+    (linum-relative-mode))
     #+END_SRC
 
 ** Sane Defaults
@@ -177,6 +192,7 @@
 
     #+BEGIN_SRC emacs-lisp
     (global-linum-mode 1)
+    (set-face-foreground 'linum "#888")
     #+END_SRC
 
     Disable some of the default modes that aren't very useful.
