@@ -229,15 +229,6 @@
     (add-hook 'before-save-hook 'delete-trailing-whitespace)
     #+END_SRC
 
-    Switch between windows using VIM bindings.
-
-    #+BEGIN_SRC emacs-lisp
-    (global-set-key (kbd "C-w h") 'windmove-left)
-    (global-set-key (kbd "C-w l") 'windmove-right)
-    (global-set-key (kbd "C-w j") 'windmove-up)
-    (global-set-key (kbd "C-w k") 'windmove-down)
-    #+END_SRC
-
 ** Visual
 
    Set the default font.
