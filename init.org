@@ -77,7 +77,8 @@
        (helm-autoresize-mode t))
     #+END_SRC
 
-*** Elpy
+*** Python
+**** Elpy
     #+BEGIN_SRC emacs-lisp
     (use-package elpy
        :config
@@ -102,6 +103,31 @@
        :config
        (projectile-mode))
   #+END_SRC
+
+*** Magit Status
+  #+BEGIN_SRC emacs-lisp
+    (use-package magit
+       :bind ("C-x g" . magit-status))
+  #+END_SRC
+
+*** Clojure
+**** Clojure-Mode
+
+     #+BEGIN_SRC emacs-lisp
+     (use-package clojure-mode
+        :ensure t
+        :mode (("\\.clj\\'" . clojure-mode)
+           ("\\.edn\\'" . clojure-mode)))
+     #+END_SRC
+
+**** Cider
+     #+BEGIN_SRC emacs-lisp
+     (use-package cider
+        :ensure t
+        :defer t
+        :bind ("C-c C-c" . cider-jack-in)
+        :init (add-hook 'cider-mode-hook #'clj-refactor-mode))
+     #+END_SRC
 
 ** Evil.
 *** Setup evil mode because VIM bindings are better.
@@ -157,9 +183,9 @@
 
 ** Sane Defaults
 
-    Use default customization values that are more sane.
+   Use default customization values that are more sane.
 
-    #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
     (setq inhibit-startup-message t     ; No splash screen
        initial-scratch-message nil      ; Clean scratch buffer
        echo-keystrokes 0.1              ; Show keystrokes asap
@@ -169,38 +195,38 @@
        default-input-method "TeX"       ; Use TeX when toggling input method
        ring-bell-function 'ignore       ; Quiet
        sentence-end-double-space nil)   ; No double space
-    #+END_SRC
+   #+END_SRC
 
-    Some customizations must be done with =setq-default= because they are
-    buffer-local.
+   Some customizations must be done with =setq-default= because they are
+   buffer-local.
 
-    #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
     (setq-default indent-tabs-mode nil  ; Use spaces instead of tabs
        split-width-threshold 160        ; Split vertically by default
        split-height-threshold nil)      ; Split vertically by default
-    #+END_SRC
+   #+END_SRC
 
-    Show line numbers by default.
+   Show line numbers by default.
 
-    #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
     (global-linum-mode 1)
     (set-face-foreground 'linum "#999")
-    #+END_SRC
+   #+END_SRC
 
-    Disable some of the default modes that aren't very useful.
+   Disable some of the default modes that aren't very useful.
 
-    #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
     (dolist (mode
        '(tool-bar-mode                ; No toolbars
           menu-bar-mode                ; No menu bar
           scroll-bar-mode              ; No scroll bars
           blink-cursor-mode))          ; No blinking cursor
        (funcall mode 0))
-    #+END_SRC
+   #+END_SRC
 
-    Enable modes that are disabled by default.
+   Enable modes that are disabled by default.
 
-    #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
     (dolist (mode
        '(column-number-mode       ; Show column number in mode line
           delete-selection-mode   ; Replace selected text
@@ -209,25 +235,25 @@
           ; which-key-mode        ; Available keybindings in popup
           winner-mode))           ; Allow undo/redo on window operations
        (funcall mode 1))
-    #+END_SRC
+   #+END_SRC
 
-    Set =utf-8= as preferred coding system.
+   Set =utf-8= as preferred coding system.
 
-    #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
     (set-language-environment "UTF-8")
-    #+END_SRC
+   #+END_SRC
 
-    Yes/no is so verbose. Answer questions with y/n.
+   Yes/no is so verbose. Answer questions with y/n.
 
-    #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
     (fset 'yes-or-no-p 'y-or-n-p)
-    #+END_SRC
+   #+END_SRC
 
-    Don't allow trailing whitespace to end up in a saved file.
+   Don't allow trailing whitespace to end up in a saved file.
 
-    #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
     (add-hook 'before-save-hook 'delete-trailing-whitespace)
-    #+END_SRC
+   #+END_SRC
 
 ** Visual
 
@@ -244,10 +270,11 @@
    Use a Nord theme.
 
    #+BEGIN_SRC emacs-lisp
-   (use-package nord-theme
-      :config
-      (setq nord-comment-brightness 15); Make comments easier to see
-      (setq nord-region-highlight "snowstorm")
-      (setq nord-uniform-mode-lines t)
-      (load-theme 'nord t))
+   (use-package doom-themes
+   :preface
+   (defvar region-fg nil)
+   :config
+   (load-theme 'doom-nord t)
+   (doom-themes-visual-bell-config)
+   (doom-themes-org-config))
    #+END_SRC
