@@ -197,6 +197,12 @@
        sentence-end-double-space nil)   ; No double space
    #+END_SRC
 
+   Always match braces / paranthesis / brackets.
+
+   #+BEGIN_SRC emacs-lisp
+   (electric-pair-mode 1)
+   #+END_SRC
+
    Some customizations must be done with =setq-default= because they are
    buffer-local.
 
