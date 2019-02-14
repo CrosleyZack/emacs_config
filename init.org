@@ -10,33 +10,6 @@
     (setq user-full-name "Zackary Crosley")
     #+END_SRC
 
-** Meta
-
-    The following configuration found initially in =init.el= enables the
-    automatic bootstrapping process.
-
-    #+BEGIN_SRC emacs-lisp :tangle no
-    ;; This file replaces itself with the actual configuration at first run.
-    (require 'org)
-    (find-file (concat user-emacs-directory "init.org"))
-    (org-babel-tangle)
-    (load-file (concat user-emacs-directory "init.el"))
-    (byte-compile-file (concat user-emacs-directory "init.el"))
-    #+END_SRC
-
-    Automatically recompile =init.el= when =init.org= is changed, on save.
-
-    #+BEGIN_SRC emacs-lisp
-    (defun tangle-init ()
-       (when (equal (buffer-file-name)
-          (expand-file-name (concat user-emacs-directory "init.org")))
-          ;; Avoid running hooks when tangling.
-          (let ((prog-mode-hook nil))
-             (org-babel-tangle)
-             (byte-compile-file (concat user-emacs-directory "init.el")))))
-    (add-hook 'after-save-hook 'tangle-init)
-    #+END_SRC
-
 ** Package Management
 
     Some basic packages are required.
@@ -65,8 +38,37 @@
     (setq use-package-always-ensure t)
     #+END_SRC
 
+** Meta
+
+    The following configuration found initially in =init.el= enables the
+    automatic bootstrapping process.
+
+    #+BEGIN_SRC emacs-lisp :tangle no
+    ;; This file replaces itself with the actual configuration at first run.
+    (require 'org)
+    (find-file (concat user-emacs-directory "init.org"))
+    (org-babel-tangle)
+    (load-file (concat user-emacs-directory "init.el"))
+    (byte-compile-file (concat user-emacs-directory "init.el"))
+    #+END_SRC
+
+    Automatically recompile =init.el= when =init.org= is changed, on save.
+
+    #+BEGIN_SRC emacs-lisp
+    (defun tangle-init ()
+       (when (equal (buffer-file-name)
+          (expand-file-name (concat user-emacs-directory "init.org")))
+          ;; Avoid running hooks when tangling.
+          (let ((prog-mode-hook nil))
+             (org-babel-tangle)
+             (byte-compile-file (concat user-emacs-directory "init.el")))))
+    (add-hook 'after-save-hook 'tangle-init)
+    #+END_SRC
+
 ** Custom Packages
+
 *** Helm
+
     #+BEGIN_SRC emacs-lisp
     (use-package helm
        :bind (("M-x" . helm-M-x)
@@ -78,7 +80,9 @@
     #+END_SRC
 
 *** Python
+
 **** Elpy
+
     #+BEGIN_SRC emacs-lisp
     (use-package elpy
        :config
@@ -96,6 +100,7 @@
     #+END_SRC
 
 *** Projectile
+
   #+BEGIN_SRC emacs-lisp
     (use-package projectile
        :init
@@ -105,12 +110,14 @@
   #+END_SRC
 
 *** Magit Status
+
   #+BEGIN_SRC emacs-lisp
     (use-package magit
        :bind ("C-x g" . magit-status))
   #+END_SRC
 
 *** Clojure
+
 **** Clojure-Mode
 
      #+BEGIN_SRC emacs-lisp
@@ -121,6 +128,7 @@
      #+END_SRC
 
 **** Cider
+
      #+BEGIN_SRC emacs-lisp
      (use-package cider
         :ensure t
@@ -130,7 +138,9 @@
      #+END_SRC
 
 ** Evil.
+
 *** Setup evil mode because VIM bindings are better.
+
     #+BEGIN_SRC emacs-lisp
     (use-package evil
        :config
@@ -145,6 +155,7 @@
     #+END_SRC
 
 *** Include evil-leader backage w/ space as leader key.
+
     #+BEGIN_SRC emacs-lisp
     (use-package evil-leader
        :init
@@ -161,6 +172,7 @@
     #+END_SRC
 
 *** evil commentary mode.
+
     #+BEGIN_SRC emacs-lisp
     (use-package evil-commentary
        :config
@@ -168,6 +180,7 @@
     #+END_SRC
 
 *** evil surround mode.
+
     #+BEGIN_SRC emacs-lisp
     (use-package evil-surround
        :init
@@ -175,6 +188,7 @@
     #+END_SRC
 
 *** Relative line numbers for evil
+
     #+BEGIN_SRC emacs-lisp
     (use-package linum-relative
        :config
@@ -195,6 +209,13 @@
        default-input-method "TeX"       ; Use TeX when toggling input method
        ring-bell-function 'ignore       ; Quiet
        sentence-end-double-space nil)   ; No double space
+   #+END_SRC
+
+   Use standard keys to zoom in and out.
+
+   #+BEGIN_SRC emacs-lisp
+   (define-key global-map (kbd "C-=") 'text-scale-increase)
+   (define-key global-map (kbd "C--") 'text-scale-decrease)
    #+END_SRC
 
    Always match braces / paranthesis / brackets.
