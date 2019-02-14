@@ -137,6 +137,14 @@
         :init (add-hook 'cider-mode-hook #'clj-refactor-mode))
      #+END_SRC
 
+*** AUCTex
+
+    #+BEGIN_SRC
+    (use-package auctex
+         :defer t
+         :ensure t)
+    #+END_SRC
+
 ** Evil.
 
 *** Setup evil mode because VIM bindings are better.
