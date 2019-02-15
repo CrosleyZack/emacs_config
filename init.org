@@ -71,6 +71,7 @@
 
     #+BEGIN_SRC emacs-lisp
     (use-package helm
+       :ensure t
        :bind (("M-x" . helm-M-x)
           ("C-x C-f" . helm-find-files)
           ("C-x b" . helm-buffers-list)
@@ -85,6 +86,7 @@
 
     #+BEGIN_SRC emacs-lisp
     (use-package elpy
+       :ensure t
        :config
        (elpy-enable)
        (setq python-shell-interpreter "ipython"
@@ -103,6 +105,7 @@
 
   #+BEGIN_SRC emacs-lisp
     (use-package projectile
+       :ensure t
        :init
        (setq projectile-enable-caching t)
        :config
@@ -113,6 +116,7 @@
 
   #+BEGIN_SRC emacs-lisp
     (use-package magit
+       :ensure t
        :bind ("C-x g" . magit-status))
   #+END_SRC
 
@@ -133,16 +137,20 @@
      (use-package cider
         :ensure t
         :defer t
-        :bind ("C-c C-c" . cider-jack-in)
-        :init (add-hook 'cider-mode-hook #'clj-refactor-mode))
+        :after (clojure-mode)
+        ::config
+        (setq nrepl-log-messages t)
+        :bind ("C-c C-c" . cider-jack-in))
      #+END_SRC
 
 *** AUCTex
 
     #+BEGIN_SRC
-    (use-package auctex
-         :defer t
-         :ensure t)
+    (use-package tex
+       :defer t
+       :ensure auctex
+       :config
+       (setq TeX-auto-save t)) 
     #+END_SRC
 
 ** Evil.
@@ -151,6 +159,7 @@
 
     #+BEGIN_SRC emacs-lisp
     (use-package evil
+       :ensure t
        :config
        (evil-mode t))
     #+END_SRC
@@ -166,8 +175,10 @@
 
     #+BEGIN_SRC emacs-lisp
     (use-package evil-leader
+       :ensure t
        :init
        (global-evil-leader-mode)
+       :after (evil)
        :config
        (evil-leader/set-key
           "k" 'kill-buffer
@@ -183,6 +194,8 @@
 
     #+BEGIN_SRC emacs-lisp
     (use-package evil-commentary
+       :ensure t
+       :after (evil)
        :config
        (evil-commentary-mode))
     #+END_SRC
@@ -191,6 +204,8 @@
 
     #+BEGIN_SRC emacs-lisp
     (use-package evil-surround
+       :ensure t
+       :after (evil)
        :init
        (global-evil-surround-mode t))
     #+END_SRC
@@ -199,6 +214,8 @@
 
     #+BEGIN_SRC emacs-lisp
     (use-package linum-relative
+       :ensure t
+       :after (evil)
        :config
        (linum-relative-mode))
     #+END_SRC
@@ -306,10 +323,11 @@
 
    #+BEGIN_SRC emacs-lisp
    (use-package doom-themes
-   :preface
-   (defvar region-fg nil)
-   :config
-   (load-theme 'doom-nord t)
-   (doom-themes-visual-bell-config)
-   (doom-themes-org-config))
+      :ensure t
+      :preface
+      (defvar region-fg nil)
+      :config
+      (load-theme 'doom-nord t)
+      (doom-themes-visual-bell-config)
+      (doom-themes-org-config))
    #+END_SRC
