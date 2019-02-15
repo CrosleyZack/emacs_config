@@ -80,25 +80,30 @@
        (helm-autoresize-mode t))
     #+END_SRC
 
-*** Python
+*** Flycheck
 
-**** Elpy
+    Better syntax highlighting like a modern IDE.
 
     #+BEGIN_SRC emacs-lisp
-    (use-package elpy
+    (use-package flycheck
        :ensure t
        :config
-       (elpy-enable)
-       (setq python-shell-interpreter "ipython"
-          python-shell-interpreter-args "-i --simple-prompt")
-       (pyvenv-workon "+")
-       (setq elpy-modules
-          '(elpy-module-sane-defaults
-             elpy-module-company
-             elpy-module-eldoc
-             elpy-module-pyvenv
-             elpy-module-yasnippet
-             elpy-module-django)))
+       (progn
+           (setq flycheck-emacs-lisp-initialize-packages 'auto
+                 flycheck-check-syntax-automatically '(save new-line))
+           (add-hook 'after-init-hook 'global-flycheck-mode)))
+    #+END_SRC
+
+*** Company Mode
+
+    Add autocompletion for all nodes.
+
+    #+BEGIN_SRC emacs-lisp
+    (use-package company
+       :ensure t
+       :diminish company-mode
+       :config
+       (add-hook 'after-init-hook 'global-company-mode))
     #+END_SRC
 
 *** Projectile
@@ -119,6 +124,27 @@
        :ensure t
        :bind ("C-x g" . magit-status))
   #+END_SRC
+
+*** Python
+
+**** Elpy
+
+    #+BEGIN_SRC emacs-lisp
+    (use-package elpy
+       :ensure t
+       :config
+       (elpy-enable)
+       (setq python-shell-interpreter "ipython"
+          python-shell-interpreter-args "-i --simple-prompt")
+       (pyvenv-workon "+")
+       (setq elpy-modules
+          '(elpy-module-sane-defaults
+             elpy-module-company
+             elpy-module-eldoc
+             elpy-module-pyvenv
+             elpy-module-yasnippet
+             elpy-module-django)))
+    #+END_SRC
 
 *** Clojure
 
@@ -145,12 +171,12 @@
 
 *** AUCTex
 
-    #+BEGIN_SRC
+    #+BEGIN_SRC emacs-lisp
     (use-package tex
        :defer t
        :ensure auctex
        :config
-       (setq TeX-auto-save t)) 
+       (setq TeX-auto-save t))
     #+END_SRC
 
 ** Evil.
@@ -282,7 +308,6 @@
     (dolist (mode
        '(column-number-mode       ; Show column number in mode line
           delete-selection-mode   ; Replace selected text
-          projectile-global-mode  ; Manage and navigate projects
           show-paren-mode         ; Highlight matching parentheses
           ; which-key-mode        ; Available keybindings in popup
           winner-mode))           ; Allow undo/redo on window operations
@@ -309,6 +334,16 @@
 
 ** Visual
 
+    Prettier, more configurable status bar.
+
+    #+BEGIN_SRC emacs-lisp
+    (use-package powerline
+       :ensure t
+       :config
+       (add-hook 'after-init-hook 'powerline-center-evil-theme))
+    #+END_SRC
+
+*
    Set the default font.
 
    #+BEGIN_SRC emacs-lisp
