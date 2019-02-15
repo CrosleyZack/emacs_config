@@ -138,7 +138,7 @@
         :ensure t
         :defer t
         :after (clojure-mode)
-        ::config
+        :config
         (setq nrepl-log-messages t)
         :bind ("C-c C-c" . cider-jack-in))
      #+END_SRC
