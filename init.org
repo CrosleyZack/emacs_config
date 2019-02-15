@@ -73,9 +73,9 @@
     (use-package helm
        :ensure t
        :bind (("M-x" . helm-M-x)
-          ("C-x C-f" . helm-find-files)
-          ("C-x b" . helm-buffers-list)
-          ("C-x C-b" . helm-filtered-bookmarks))
+              ("C-x C-f" . helm-find-files)
+              ("C-x b" . helm-buffers-list)
+              ("C-x C-b" . helm-filtered-bookmarks))
        :config
        (helm-autoresize-mode t))
     #+END_SRC
@@ -154,7 +154,7 @@
      (use-package clojure-mode
         :ensure t
         :mode (("\\.clj\\'" . clojure-mode)
-           ("\\.edn\\'" . clojure-mode)))
+               ("\\.edn\\'" . clojure-mode)))
      #+END_SRC
 
 **** Cider
@@ -172,11 +172,11 @@
 *** AUCTex
 
     #+BEGIN_SRC emacs-lisp
-    (use-package tex
-       :defer t
-       :ensure auctex
-       :config
-       (setq TeX-auto-save t))
+    ;(use-package tex
+    ;   :defer t
+    ;   :ensure auctex
+    ;   :config
+    ;   (setq TeX-auto-save t))
     #+END_SRC
 
 ** Evil.
@@ -197,7 +197,9 @@
        (define-key evil-motion-state-map "\C-v" nil))
     #+END_SRC
 
-*** Include evil-leader backage w/ space as leader key.
+*** Evil Leader
+
+    For fast keyboard shortcuts for common commands.
 
     #+BEGIN_SRC emacs-lisp
     (use-package evil-leader
@@ -216,7 +218,7 @@
        (evil-leader/set-leader "<SPC>"))
     #+END_SRC
 
-*** evil commentary mode.
+*** Evil Commentary
 
     #+BEGIN_SRC emacs-lisp
     (use-package evil-commentary
@@ -226,7 +228,9 @@
        (evil-commentary-mode))
     #+END_SRC
 
-*** evil surround mode.
+*** Evil Surround
+
+    Vim commands for dealing with surrounding characters.
 
     #+BEGIN_SRC emacs-lisp
     (use-package evil-surround
@@ -236,7 +240,9 @@
        (global-evil-surround-mode t))
     #+END_SRC
 
-*** Relative line numbers for evil
+*** Relative Line Numbers
+
+    Relative line numbering for easy navigation with vim shortcuts.
 
     #+BEGIN_SRC emacs-lisp
     (use-package linum-relative
@@ -343,7 +349,6 @@
        (add-hook 'after-init-hook 'powerline-center-evil-theme))
     #+END_SRC
 
-*
    Set the default font.
 
    #+BEGIN_SRC emacs-lisp
