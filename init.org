@@ -179,6 +179,17 @@
     ;   (setq TeX-auto-save t))
     #+END_SRC
 
+*** Dockerfile Mode
+
+    Syntax highilighting and building from Emacs.
+
+   #+BEGIN_SRC emacs-lisp
+   (use-package dockerfile-mode
+      :ensure t
+      :mode ("Dockerfile\\'" . dockerfile-mode))
+   #+END_SRC
+
+
 ** Evil.
 
 *** Setup evil mode because VIM bindings are better.
