@@ -3,9 +3,10 @@
 #+BABEL: :cache yes
 #+PROPERTY: header-args :tangle yes
 
-
 * Configuration
+
 ** Set Personal Info
+
     #+BEGIN_SRC emacs-lisp
     (setq user-full-name "Zackary Crosley")
     #+END_SRC
@@ -183,12 +184,24 @@
 
     Syntax highilighting and building from Emacs.
 
-   #+BEGIN_SRC emacs-lisp
-   (use-package dockerfile-mode
-      :ensure t
-      :mode ("Dockerfile\\'" . dockerfile-mode))
-   #+END_SRC
+    #+BEGIN_SRC emacs-lisp
+    (use-package dockerfile-mode
+       :ensure t
+       :mode ("Dockerfile\\'" . dockerfile-mode))
+    #+END_SRC
 
+*** Buffer Move
+
+    Exchange buffers between split windows faster. Bound to C-w e-? for Window - Exchange.
+
+    #+BEGIN_SRC emacs-lisp
+    (use-package buffer-move
+       :ensure t)
+       ;:bind (("C-w e k" . buf-move-up)
+              ;("C-w e j" . buf-move-down)
+              ;("C-w e h" . buf-move-left)
+              ;("C-w e l" . buf-move-right)))
+    #+END_SRC
 
 ** Evil.
 
@@ -201,11 +214,27 @@
        (evil-mode t))
     #+END_SRC
 
-*** Prevent overwriting of paste, as visual rectangle isn't really useful anyway.
+*** Evil Maps
+
+    More evil mappings for moving between panes, etc.
 
     #+BEGIN_SRC emacs-lisp
-    (eval-after-load "evil-maps"
-       (define-key evil-motion-state-map "\C-v" nil))
+      (use-package evil-maps
+         :ensure t
+         :config
+         (progn
+            (define-key evil-motion-state-map "\C-v" nil)
+            (define-key evil-window-map (kbd "e h") 'buf-move-left)
+            (define-key evil-window-map (kbd "e j") 'buf-move-down)
+            (define-key evil-window-map (kbd "e k") 'buf-move-up)
+            (define-key evil-window-map (kbd "e l") 'buf-move-right)))
+      ;;    :bind (("C-w e k" . buf-move-up)
+      ;;           ("C-w e j" . buf-move-down)
+      ;;           ("C-w e h" . buf-move-left)
+      ;;           ("C-w e l" . buf-move-right)))
+      ;; ;; ;(eval-after-load "evil-maps"
+      ;; ;
+      ;;(define-key evil-motion-state-map "\C-v" nil))
     #+END_SRC
 
 *** Evil Leader
@@ -351,14 +380,14 @@
 
 ** Visual
 
-    Prettier, more configurable status bar.
+   Prettier, more configurable status bar.
 
-    #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
     (use-package powerline
        :ensure t
        :config
        (add-hook 'after-init-hook 'powerline-center-evil-theme))
-    #+END_SRC
+   #+END_SRC
 
    Set the default font.
 
