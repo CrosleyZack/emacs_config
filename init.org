@@ -170,6 +170,15 @@
         :bind ("C-c C-c" . cider-jack-in))
      #+END_SRC
 
+*** YAML
+
+    #+BEGIN_SRC emacs-lisp
+    (use-package yaml-mode
+        :ensure t
+        :mode (("\\.yaml\\'" . yaml-mode)
+               ("\\.yml'" . yaml-mode)))
+    #+END_SRC
+
 *** AUCTex
 
     #+BEGIN_SRC emacs-lisp
