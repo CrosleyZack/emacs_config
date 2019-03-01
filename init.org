@@ -233,17 +233,10 @@
          :config
          (progn
             (define-key evil-motion-state-map "\C-v" nil)
-            (define-key evil-window-map (kbd "e h") 'buf-move-left)
-            (define-key evil-window-map (kbd "e j") 'buf-move-down)
-            (define-key evil-window-map (kbd "e k") 'buf-move-up)
-            (define-key evil-window-map (kbd "e l") 'buf-move-right)))
-      ;;    :bind (("C-w e k" . buf-move-up)
-      ;;           ("C-w e j" . buf-move-down)
-      ;;           ("C-w e h" . buf-move-left)
-      ;;           ("C-w e l" . buf-move-right)))
-      ;; ;; ;(eval-after-load "evil-maps"
-      ;; ;
-      ;;(define-key evil-motion-state-map "\C-v" nil))
+            (define-key evil-window-map (kbd "H") 'buf-move-left)
+            (define-key evil-window-map (kbd "J") 'buf-move-down)
+            (define-key evil-window-map (kbd "K") 'buf-move-up)
+            (define-key evil-window-map (kbd "L") 'buf-move-right)))
     #+END_SRC
 
 *** Evil Leader
@@ -322,6 +315,9 @@
    #+BEGIN_SRC emacs-lisp
    (define-key global-map (kbd "C-=") 'text-scale-increase)
    (define-key global-map (kbd "C--") 'text-scale-decrease)
+   (global-set-key (kbd "C-x O") (lambda ()
+                                (interactive)
+                                (other-window -1 t)))
    #+END_SRC
 
    Always match braces / paranthesis / brackets.
