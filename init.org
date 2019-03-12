@@ -303,7 +303,7 @@
        :ensure t
        :after (evil)
        :config
-       (evil-vimish-fold-mode 1))
+       (vimish-fold-mode 1))
     #+END_SRC
 
 ** Sane Defaults
