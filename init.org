@@ -188,7 +188,7 @@
      (use-package sphinx-doc
         :ensure t
         :config
-        (add-hook 'python-mode-hook (sphinx-doc-mode t)))
+        (add-hook 'python-mode-hook 'sphinx-doc-mode))
      #+END_SRC
 
 *** Clojure
