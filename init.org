@@ -68,20 +68,8 @@
 
 ** Custom Packages
 
-*** Helm
-
-    #+BEGIN_SRC emacs-lisp
-    (use-package helm
-       :ensure t
-       :bind (("M-x" . helm-M-x)
-              ("C-x C-f" . helm-find-files)
-              ("C-x b" . helm-buffers-list)
-              ("C-x C-b" . helm-filtered-bookmarks))
-       :config
-       (helm-autoresize-mode t))
-    #+END_SRC
-
-*** Flycheck
+*** General Code Tools
+**** Flycheck
 
     Better syntax highlighting like a modern IDE.
 
@@ -95,7 +83,7 @@
            (add-hook 'after-init-hook 'global-flycheck-mode)))
     #+END_SRC
 
-*** Company Mode
+**** Company Mode
 
     Add autocompletion for all nodes.
 
@@ -107,7 +95,30 @@
        (add-hook 'after-init-hook 'global-company-mode))
     #+END_SRC
 
-*** Projectile
+**** Buffer Move
+
+    Exchange buffers between split windows faster. Bound to C-w e-? for Window - Exchange.
+
+    #+BEGIN_SRC emacs-lisp
+    (use-package buffer-move
+       :ensure t)
+   #+END_SRC
+
+*** Project Tools
+**** Helm
+
+    #+BEGIN_SRC emacs-lisp
+    (use-package helm
+       :ensure t
+       :bind (("M-x" . helm-M-x)
+              ("C-x C-f" . helm-find-files)
+              ("C-x b" . helm-buffers-list)
+              ("C-x C-b" . helm-filtered-bookmarks))
+       :config
+       (helm-autoresize-mode t))
+    #+END_SRC
+
+**** Projectile
 
   #+BEGIN_SRC emacs-lisp
     (use-package projectile
@@ -118,13 +129,24 @@
        (projectile-mode))
   #+END_SRC
 
-*** Magit Status
+**** Magit Status
 
   #+BEGIN_SRC emacs-lisp
     (use-package magit
        :ensure t
        :bind ("C-x g" . magit-status))
   #+END_SRC
+
+*** Debugging
+
+**** RealGUD
+
+     For debugging interactively in Emacs
+
+     #+BEGIN_SRC emacs-lisp
+     (use-package realgud
+        :ensure t)
+     #+END_SRC
 
 *** Python
 
@@ -146,6 +168,28 @@
              elpy-module-yasnippet
              elpy-module-django)))
     #+END_SRC
+
+**** autopep8
+
+     Automatically apply proper python coding standards on save, if not already.
+
+    #+BEGIN_SRC emacs-lisp
+    (use-package py-autopep8
+       :ensure t
+       :config
+       (add-hook 'python-mode-hook 'py-autopep8-enable-on-save))
+    #+END_SRC
+
+**** Sphinx Doc
+
+     Add sphinx documentations to function headers.
+
+     #+BEGIN_SRC emacs-lisp
+     (use-package sphinx-doc
+        :ensure t
+        :config
+        (add-hook 'python-mode-hook (sphinx-doc-mode t)))
+     #+END_SRC
 
 *** Clojure
 
@@ -179,17 +223,21 @@
                ("\\.yml'" . yaml-mode)))
     #+END_SRC
 
-*** AUCTex
+*** Latex
+
+**** Auctex
 
     #+BEGIN_SRC emacs-lisp
-    ;(use-package tex
-    ;   :defer t
-    ;   :ensure auctex
-    ;   :config
-    ;   (setq TeX-auto-save t))
+    (use-package tex
+       :defer t
+       :ensure auctex
+       :config
+       (setq TeX-auto-save t))
     #+END_SRC
 
-*** Dockerfile Mode
+*** Docker
+
+**** Dockerfile Mode
 
     Syntax highilighting and building from Emacs.
 
@@ -197,19 +245,6 @@
     (use-package dockerfile-mode
        :ensure t
        :mode ("Dockerfile\\'" . dockerfile-mode))
-    #+END_SRC
-
-*** Buffer Move
-
-    Exchange buffers between split windows faster. Bound to C-w e-? for Window - Exchange.
-
-    #+BEGIN_SRC emacs-lisp
-    (use-package buffer-move
-       :ensure t)
-       ;:bind (("C-w e k" . buf-move-up)
-              ;("C-w e j" . buf-move-down)
-              ;("C-w e h" . buf-move-left)
-              ;("C-w e l" . buf-move-right)))
     #+END_SRC
 
 ** Evil.
