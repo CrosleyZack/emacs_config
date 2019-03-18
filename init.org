@@ -3,11 +3,6 @@
 #+BABEL: :cache yes
 #+PROPERTY: header-args :tangle yes
 
-* TODO
-** Configure company-auctex to run.
-** Run Latex compiler in Tex mode on C-c C-c and show pdf in side-by-side pane
-
-
 * Configuration
 
 ** Set Personal Info
@@ -275,6 +270,11 @@
 
 *** Latex
 
+**** TODO Make these packages work together! Right now nothing launches with `latex-mode`
+***** Run Latex compiler in Tex mode on C-c C-c and show pdf in side-by-side pane
+***** Configure company-auctex to run.
+
+
 **** PDF Tools
 
      #+BEGIN_SRC emacs-lisp
@@ -298,7 +298,7 @@
          (setq reftex-cite-prompt-optional-args t)); Prompt for empty optional arguments in cite
      #+END_SRC
 
-**** COMMENT Auctex
+**** Auctex
 
      #+BEGIN_SRC emacs-lisp
        ; See https://nasseralkmim.github.io/notes/2016/08/21/my-latex-environment/
@@ -333,6 +333,8 @@
      #+END_SRC
 
 **** Magic Latex Buffer
+
+     Pretty latex for easier editing.
 
      #+BEGIN_SRC emacs-lisp
        (use-package magic-latex-buffer
