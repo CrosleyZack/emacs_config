@@ -276,7 +276,7 @@
 
      #+BEGIN_SRC emacs-lisp
        (use-package lispyville
-         :hook ((clojure-mode lispy-mode) . lispyville-mode)
+         :hook ((clojure-mode lispy-mode cider-repl-mode) . lispyville-mode)
          :custom
          (lispyville-key-theme '(operators
                                  (escape insert)
