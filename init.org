@@ -16,7 +16,6 @@
     Some basic packages are required.
 
     #+BEGIN_SRC emacs-lisp
-    ; (require 'cl)
     (require 'package)
     (package-initialize)
     #+END_SRC
@@ -137,6 +136,19 @@
        :ensure t
        :bind ("C-x g" . magit-status))
     #+END_SRC
+
+**** Diff HL Mode
+
+     Show changes in repo in the buffer.
+
+     #+BEGIN_SRC emacs-lisp
+     (use-package diff-hl
+        :ensure t
+        :config
+        (global-diff-hl-mode)
+        (diff-hl-flydiff-mode)
+        (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
+     #+END_SRC
 
 *** Debugging
 
@@ -423,7 +435,8 @@
           "<up>" 'evil-numbers/inc-at-pt
           "<down>" 'evil-numbers/dec-at-pt
           "<left>" 'evil-window-left
-          "<right>" 'evil-window-right)
+          "<right>" 'evil-window-right
+          "l"       'fc-eval-and-replace) ; See Utility Functions section
        (evil-leader/set-leader "<SPC>"))
     #+END_SRC
 
@@ -559,6 +572,21 @@
    #+BEGIN_SRC emacs-lisp
     (add-hook 'before-save-hook 'delete-trailing-whitespace)
    #+END_SRC
+
+** Utility Functions
+
+*** Eval in Place
+
+    Enables in place evaluations of lisp code. Useful for calculations in document.
+
+    #+BEGIN_SRC emacs-lisp
+      (defun fc-eval-and-replace ()
+        "Replace the preceding sexp with its value."
+        (interactive)
+        (kill-sexp)
+        (prin1 (eval (read (current-kill 0)))
+               (current-buffer)))
+    #+END_SRC
 
 ** Visual
 
