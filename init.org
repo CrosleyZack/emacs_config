@@ -77,11 +77,11 @@
     #+BEGIN_SRC emacs-lisp
     (use-package flycheck
        :ensure t
+       :hook (prog-mode . flycheck-mode)
        :config
        (progn
            (setq flycheck-emacs-lisp-initialize-packages 'auto
-                 flycheck-check-syntax-automatically '(save new-line))
-           (add-hook 'after-init-hook 'global-flycheck-mode)))
+                 flycheck-check-syntax-automatically '(save new-line))))
     #+END_SRC
 
 **** Company Mode
@@ -91,9 +91,8 @@
     #+BEGIN_SRC emacs-lisp
     (use-package company
        :ensure t
-       :diminish company-mode
-       :config
-       (add-hook 'after-init-hook 'global-company-mode))
+       :hook (prog-mode . company-mode)
+       :diminish company-mode)
     #+END_SRC
 
 **** Buffer Move
@@ -260,8 +259,7 @@
 
      #+BEGIN_SRC emacs-lisp
        (use-package lispyville
-         :hook ((clojure-mode . lispyville-mode)
-                (lispy-mode . lispyville-mode))
+         :hook ((clojure-mode lispy-mode) . lispyville-mode)
          :custom
          (lispyville-key-theme '(operators
                                  (escape insert)
@@ -286,19 +284,27 @@
 ***** Run Latex compiler in Tex mode on C-c C-c and show pdf in side-by-side pane
 ***** Configure company-auctex to run.
 
-
 **** PDF Tools
 
      #+BEGIN_SRC emacs-lisp
       (use-package pdf-tools
          :ensure t
-         :mode ("\\.pdf\\'" . pdf-tools-install)
+         :mode ("\\.pdf\\'" . pdf-view-mode)
          :bind ("C-c C-g" . pdf-sync-forward-search)
          :defer t
          :config
+         (pdf-tools-install)
          (setq mouse-wheel-follow-mouse t)
-         (setq pdf-view-resize-factor 1.10))
+         (setq pdf-view-display-size 'fit-page))
      #+END_SRC
+
+**** Org Pdf View
+
+    #+BEGIN_SRC emacs-lisp
+    (use-package org-pdfview
+       :ensure t
+       :after pdf-tools)
+    #+END_SRC
 
 **** RefTex
 
@@ -318,11 +324,11 @@
          :ensure auctex
          :mode ("\\.tex\\'" . latex-mode)
          :after (reftex)
-         :init
-         (add-hook 'LaTeX-mode-hook
-                   (lambda ()
+         :hook ((latex-mode LaTeX-mode) . (lambda ()
                      (turn-on-reftex)
                      (reftex-isearch-minor-mode)))
+         ;:init
+         ;(add-hook latex-mode LaTeX-mode-hook)
          :config
          (setq TeX-save-query nil)
          (setq TeX-auto-save t)
@@ -350,16 +356,15 @@
 
      #+BEGIN_SRC emacs-lisp
        (use-package magic-latex-buffer
-         :init
-         :after (latex)
+         :ensure t
+         :hook ((latex-mode LaTeX-mode) . 'magic-latex-buffer)
+         :config
          (setq magic-latex-enable-block-highlight t
                magic-latex-enable-suscript        t
                magic-latex-enable-pretty-symbols  t
                magic-latex-enable-block-align     t
                magic-latex-enable-inline-image    t
-               magic-latex-enable-minibuffer-echo t)
-         :config
-         (add-hook 'LaTeX-mode-hook 'magic-latex-buffer))
+               magic-latex-enable-minibuffer-echo t))
      #+END_SRC
 
 **** Company Auctex
@@ -367,11 +372,10 @@
      Autocompletions for latex
 
      #+BEGIN_SRC emacs-lisp
-       ;; (use-package company-auctex
-       ;;   :ensure t
-       ;;   :after (:all company tex-site)
-       ;;   :config
-       ;;   (add-hook 'LaTeX-mode-hook (lambda () company-auctex-init)))
+       (use-package company-auctex
+         :ensure t
+         :after (:all company latex)
+         :hook ((latex-mode LaTeX-mode) . company-auctex-init))
      #+END_SRC
 
 *** Docker
@@ -512,7 +516,7 @@
    Show line numbers by default.
 
    #+BEGIN_SRC emacs-lisp
-    (global-linum-mode 1)
+    (add-hook 'prog-mode-hook 'linum-on)
     (set-face-foreground 'linum "#999")
    #+END_SRC
 
