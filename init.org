@@ -74,13 +74,12 @@
     Better syntax highlighting like a modern IDE.
 
     #+BEGIN_SRC emacs-lisp
-    (use-package flycheck
-       :ensure t
-       :hook (prog-mode . flycheck-mode)
-       :config
-       (progn
-           (setq flycheck-emacs-lisp-initialize-packages 'auto
-                 flycheck-check-syntax-automatically '(save new-line))))
+      (use-package flycheck
+         :ensure t
+         :hook (prog-mode . flycheck-mode)
+         :config
+         (setq flycheck-emacs-lisp-initialize-packages 'auto
+               flycheck-check-syntax-automatically '(save new-line)))
     #+END_SRC
 
 **** Company Mode
@@ -90,7 +89,7 @@
     #+BEGIN_SRC emacs-lisp
     (use-package company
        :ensure t
-       :hook (prog-mode . company-mode)
+       :hook ((prog-mode latex-mode LaTeX-mode) . company-mode)
        :diminish company-mode)
     #+END_SRC
 
@@ -159,12 +158,11 @@
      `python -m ipdb`
 
      #+BEGIN_SRC emacs-lisp
-     (use-package realgud
-        :ensure t
-        :config
-        (progn
-           (setq realgud:pdb-command-name "python -m pdb")
-           (setq realgud:ipdb-command-name "python -m ipdb")))
+       (use-package realgud
+         :ensure t
+         :config
+         (setq realgud:pdb-command-name "python -m pdb")
+         (setq realgud:ipdb-command-name "python -m ipdb"))
      #+END_SRC
 
 *** Python-
@@ -194,17 +192,24 @@
      Better Autocomplete and static code analysis with jedi
 
      #+BEGIN_SRC emacs-lisp
+     (use-package jedi-core
+        :ensure t)
+     #+END_SRC
+
+**** Jedi Company
+
+
+     #+BEGIN_SRC emacs-lisp
        (use-package company-jedi
-          :ensure t
-          :config
-          :after (company)
-          :hook
-          ((python-mode . jedi:setup))
-          :init
-          (setq jedi:complete-on-dot t)
-          (setq jedi:use-shortcuts t)
-          (add-hook 'python-mode-hook
-          (lambda () (add-to-list 'company-backends 'company-jedi))))
+         :ensure t
+         :config
+         (setq jedi:environment-virtualenv (list (expand-file-name "~/.virtualenvs")))
+         (add-hook 'python-mode-hook 'jedi:setup)
+         (setq jedi:complete-on-dot t)
+         (setq jedi:use-shortcuts t)
+         (defun config/enable-company-jedi ()
+           (add-to-list 'company-backends 'company-jedi))
+         (add-hook 'python-mode-hook 'config/enable-company-jedi))
      #+END_SRC
 
 **** Import Magic
@@ -293,30 +298,8 @@
 *** Latex
 
 **** TODO Make these packages work together! Right now nothing launches with `latex-mode`
-***** Run Latex compiler in Tex mode on C-c C-c and show pdf in side-by-side pane
-***** Configure company-auctex to run.
+***** `pdf-sync-forward-search` not found (pdf-tools)
 
-**** PDF Tools
-
-     #+BEGIN_SRC emacs-lisp
-      (use-package pdf-tools
-         :ensure t
-         :mode ("\\.pdf\\'" . pdf-view-mode)
-         :bind ("C-c C-g" . pdf-sync-forward-search)
-         :defer t
-         :config
-         (pdf-tools-install)
-         (setq mouse-wheel-follow-mouse t)
-         (setq pdf-view-display-size 'fit-page))
-     #+END_SRC
-
-**** Org Pdf View
-
-    #+BEGIN_SRC emacs-lisp
-    (use-package org-pdfview
-       :ensure t
-       :after pdf-tools)
-    #+END_SRC
 
 **** RefTex
 
@@ -334,32 +317,42 @@
        ; See https://nasseralkmim.github.io/notes/2016/08/21/my-latex-environment/
        (use-package latex
          :ensure auctex
-         :mode ("\\.tex\\'" . latex-mode)
-         :after (reftex)
-         :hook ((latex-mode LaTeX-mode) . (lambda ()
-                     (turn-on-reftex)
-                     (reftex-isearch-minor-mode)))
-         ;:init
-         ;(add-hook latex-mode LaTeX-mode-hook)
+         :mode ("\\.tex\\'" . LaTeX-mode)
+         :after (:all reftex)
+         :init
+         (setq TeX-source-correlate-method 'synctex)
+         :hook ((latex-mode LaTeX-mode) . Tex-source-correlate-mode)
+         ;; (lambda ()
+         ;;             (turn-on-reftex)
+         ;;             (reftex-isearch-minor-mode)
+         ;;             (setq reftex-plug-into-AUCTeX t)
+         ;;             (setq TeX-PDF-mode t)
+         ;;             (setq TeX-source-correlate-start-server t))
          :config
-         (setq TeX-save-query nil)
          (setq TeX-auto-save t)
          (setq TeX-parse-self t)
          (setq-default TeX-master nil)
-         (setq reftex-plug-into-AUCTeX t)
-         (setq TeX-PDF-mode t)
-         (setq TeX-electric-escape t)
-         (setq TeX-source-correlate-method 'synctex)
-         (setq TeX-source-correlate-start-server t)
+         ; (setq TeX-electric-escape t)
+         ; (setq TeX-save-query nil)
          ;; Update PDF buffers after successful LaTeX runs
-         (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook
-                   #'TeX-revert-document-buffer)
+         (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook #'TeX-revert-document-buffer)
          ;; to use pdfview with auctex
-         (add-hook 'LaTeX-mode-hook 'pdf-tools-install)
+         ; (add-hook 'LaTeX-mode-hook 'pdf-tools-install)
          ;; to use pdfview with auctex
          (setq TeX-view-program-selection '((output-pdf "pdf-tools"))
                TeX-source-correlate-start-server t)
          (setq TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view"))))
+     #+END_SRC
+
+**** Company Auctex
+
+     Autocompletions for latex
+
+     #+BEGIN_SRC emacs-lisp
+       (use-package company-auctex
+         :ensure t
+         :after (:all company latex)
+         :hook ((latex-mode LaTeX-mode) . company-auctex-init))
      #+END_SRC
 
 **** Magic Latex Buffer
@@ -379,16 +372,27 @@
                magic-latex-enable-minibuffer-echo t))
      #+END_SRC
 
-**** Company Auctex
-
-     Autocompletions for latex
+**** PDF Tools
 
      #+BEGIN_SRC emacs-lisp
-       (use-package company-auctex
+      (use-package pdf-tools
          :ensure t
-         :after (:all company latex)
-         :hook ((latex-mode LaTeX-mode) . company-auctex-init))
+         :defer t
+         :mode ("\\.pdf\\'" . pdf-view-mode)
+         :config
+         (pdf-tools-install)
+         (setq mouse-wheel-follow-mouse t)
+         (setq pdf-view-display-size 'fit-page)
+         :bind ("C-c C-g" . pdf-sync-forward-search))
      #+END_SRC
+
+**** Org Pdf View
+
+    #+BEGIN_SRC emacs-lisp
+    (use-package org-pdfview
+       :ensure t
+       :after pdf-tools)
+    #+END_SRC
 
 *** Docker
 
@@ -410,12 +414,11 @@
       (use-package evil
         :ensure t
         :config
-        (progn
-          (evil-mode t)
-          (define-key evil-window-map (kbd "H") 'buf-move-left)
-          (define-key evil-window-map (kbd "J") 'buf-move-down)
-          (define-key evil-window-map (kbd "K") 'buf-move-up)
-          (define-key evil-window-map (kbd "L") 'buf-move-right)))
+        (evil-mode t)
+        (define-key evil-window-map (kbd "H") 'buf-move-left)
+        (define-key evil-window-map (kbd "J") 'buf-move-down)
+        (define-key evil-window-map (kbd "K") 'buf-move-up)
+        (define-key evil-window-map (kbd "L") 'buf-move-right))
     #+END_SRC
 
 *** Evil Leader
@@ -509,7 +512,7 @@
    (define-key global-map (kbd "C--") 'text-scale-decrease)
    #+END_SRC
 
-   Use C-O to move backwards through buffers (match TMUX)
+   Use C-x O to move backwards through buffers (match TMUX)
 
    #+BEGIN_SRC emacs-lisp
    (global-set-key (kbd "C-x O") (lambda ()
