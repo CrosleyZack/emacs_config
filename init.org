@@ -231,11 +231,17 @@
 **** Clojure-Mode
 
      #+BEGIN_SRC emacs-lisp
-     (use-package clojure-mode
-        :ensure t
-        :hook (clojure-mode . electric-pair-mode)
-        :mode (("\\.clj\\'" . clojure-mode)
-               ("\\.edn\\'" . clojure-mode)))
+            (use-package clojure-mode
+               :ensure t
+               :hook ((clojure-mode . electric-pair-mode))
+               :mode (("\\.clj\\'" . clojure-mode)
+                      ("\\.edn\\'" . clojure-mode))
+               :config
+               (setq clojure-align-forms-automatically t)
+               (setq clojure-indent-style 'align-arguments)
+               (define-clojure-indent
+                 (-> 1)
+                 (->> 1)))
      #+END_SRC
 
 **** Cider
