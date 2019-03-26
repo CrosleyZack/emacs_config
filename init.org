@@ -105,9 +105,11 @@
 **** Origami Mode
 
      #+BEGIN_SRC emacs-lisp
-     (use-package origami
-       :ensure t
-       :hook (prog-mode . origami-mode))
+       (use-package origami
+         :ensure t
+         :config
+         (origami-mode 1))
+         ;:hook (prog-mode . origami-mode))
      #+END_SRC
 
 *** Project Tools
@@ -216,7 +218,7 @@
          (setq jedi:complete-on-dot t)
          (setq jedi:use-shortcuts t)
          (defun config/enable-company-jedi ()
-           (add-to-list 'company-backends 'company-jedi))
+            (add-to-list 'company-backends 'company-jedi))
          (add-hook 'python-mode-hook 'config/enable-company-jedi))
      #+END_SRC
 
@@ -402,6 +404,7 @@
        :after pdf-tools)
     #+END_SRC
 
+**** Company bib
 *** Docker
 
 **** Dockerfile Mode
@@ -494,7 +497,15 @@
        :ensure t
        :after (evil)
        :config
-       (vimish-fold-mode 1))
+       (vimish-fold-global-mode 1))
+    #+END_SRC
+
+    #+BEGIN_SRC emacs-lisp
+    (use-package evil-vimish-fold
+       :ensure t
+       :after (evil vimish-fold)
+       :config
+       (evil-vimish-fold-mode 1))
     #+END_SRC
 
 ** Sane Defaults
