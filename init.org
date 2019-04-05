@@ -386,7 +386,8 @@
       (use-package pdf-tools
          :ensure t
          :defer t
-         :mode ("\\.pdf\\'" . pdf-view-mode)
+         :magic ("%PDF" . pdf-view-mode)
+         ;:mode ("\\.pdf\\'" . pdf-view-mode)
          :config
          (pdf-tools-install)
          (setq mouse-wheel-follow-mouse t)
@@ -415,6 +416,22 @@
        :mode ("Dockerfile\\'" . dockerfile-mode))
      #+END_SRC
 
+*** CTFs
+
+    TODO - in order to get into view mode you have to run M-x x509-view<FILETYPE> while in x509 mode.
+    Figure out how to do this automatically.
+
+    #+BEGIN_SRC emacs-lisp
+    (use-package x509-mode
+       :ensure t
+       :mode (("\\.crl\\'" . x509-mode)
+              ("\\.crt\\'" . x509-mode)
+              ("\\.asn.1\\'" . x509-mode)
+              ("\\.key\\'" . x509-mode)
+              ("\\.dh\\'" . x509-mode))
+       :config
+       (setq x509-openssl-cmd "openssl"))
+    #+END_SRC
 ** Evil.
 
 *** Setup evil mode because VIM bindings are better.
