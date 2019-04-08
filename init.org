@@ -164,7 +164,7 @@
          (setq realgud:ipdb-command-name "python -m ipdb"))
      #+END_SRC
 
-*** Python-
+*** Python
 
 **** Elpy
 
@@ -491,6 +491,8 @@
        :ensure t
        :after (evil)
        :config
+       (add-hook 'prog-mode-hook 'linum-on)
+       (set-face-foreground 'linum "#999")
        (linum-relative-mode))
     #+END_SRC
 
@@ -534,12 +536,10 @@
        split-height-threshold nil)     ; Split vertically by default
    #+END_SRC
 
-   Show line numbers by default.
+   Enable hide-show in program buffers.
 
    #+BEGIN_SRC emacs-lisp
-    (add-hook 'prog-mode-hook 'linum-on)
     (add-hook 'prog-mode-hook 'hs-minor-mode)
-    (set-face-foreground 'linum "#999")
    #+END_SRC
 
    Disable some of the default modes that aren't very useful.
