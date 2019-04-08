@@ -101,15 +101,6 @@
        :ensure t)
    #+END_SRC
 
-**** Origami Mode
-
-     #+BEGIN_SRC emacs-lisp
-       (use-package origami
-         :ensure t
-         :config
-         (origami-mode 1))
-     #+END_SRC
-
 *** Project Tools
 
 **** Helm
@@ -503,18 +494,6 @@
        (linum-relative-mode))
     #+END_SRC
 
-*** Vimish Fold
-
-    For folding code, making it easier to navigate.
-
-    #+BEGIN_SRC emacs-lisp
-    (use-package vimish-fold
-       :ensure t
-       :after (evil)
-       :config
-       (vimish-fold-global-mode 1))
-    #+END_SRC
-
 ** Sane Defaults
 
    Use default customization values that are more sane.
@@ -559,6 +538,7 @@
 
    #+BEGIN_SRC emacs-lisp
     (add-hook 'prog-mode-hook 'linum-on)
+    (add-hook 'prog-mode-hook 'hs-minor-mode)
     (set-face-foreground 'linum "#999")
    #+END_SRC
 
