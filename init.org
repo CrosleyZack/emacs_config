@@ -386,6 +386,17 @@
     #+END_SRC
 
 **** Company bib
+
+     Autocompletions in bibtex files
+
+     #+BEGIN_SRC emacs-lisp
+     (use-package company-bibtex
+        :ensure t
+        :after (:all company latex)
+        :config
+        (add-to-list 'company-backends 'company-bibtex))
+     #+END_SRC
+
 *** Docker
 
 **** Dockerfile Mode
