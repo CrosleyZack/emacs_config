@@ -409,6 +409,28 @@
         :mode ("Dockerfile\\'" . dockerfile-mode))
      #+END_SRC
 
+*** JSON
+
+**** JSON Mode
+
+     Syntax highlighting for json files. Hopefully lighter weight than javascript mode.
+
+     #+BEGIN_SRC emacs-lisp
+     (use-package json-mode
+        :ensure t
+        :mode ("\\.json\\'" . json-mode))
+     #+END_SRC
+
+**** JSON Snatcher
+
+     Get keys to reach location of any arbitrary point in file.
+
+     #+BEGIN_SRC emacs-lisp
+     (use-package json-snatcher
+        :ensure t
+        :after (json-mode))
+     #+END_SRC
+
 *** CTFs
 
 **** TODO - in order to get into view mode you have to run M-x x509-view<FILETYPE> while in x509 mode.
