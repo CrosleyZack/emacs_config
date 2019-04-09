@@ -3,6 +3,12 @@
 #+BABEL: :cache yes
 #+PROPERTY: header-args :tangle yes
 
+* Build Instructions
+
+1. Clone repo into ~/.emacs.d
+2. In emacs, run =M-x org-babel-load-file=
+3. Remove ~/.emacs if it exists
+
 * Configuration
 
 ** Set Personal Info
