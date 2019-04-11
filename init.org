@@ -5,9 +5,10 @@
 
 * Build Instructions
 
-1. Clone repo into ~/.emacs.d
+1. Clone repo into =~/.emacs.d=
 2. In emacs, run =M-x org-babel-load-file=
-3. Remove ~/.emacs if it exists
+3. Select file =~/.emacs.d/init.org=
+4. Remove =~/.emacs= if it exists
 
 * Configuration
 
