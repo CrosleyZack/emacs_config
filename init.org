@@ -559,6 +559,12 @@
    (define-key global-map (kbd "C--") 'text-scale-decrease)
    #+END_SRC
 
+   Line wrap by default in Org mode.
+
+   #+BEGIN_SRC emacs-lisp
+   (add-hook 'org-mode-hook 'visual-line-mode)
+   #+END_SRC
+
    Use C-x O to move backwards through buffers (match TMUX)
 
    #+BEGIN_SRC emacs-lisp
