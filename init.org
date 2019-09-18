@@ -659,7 +659,7 @@
    #+BEGIN_SRC emacs-lisp
    (set-face-attribute 'default nil
       :family "Source Code Pro"
-      :height 140
+      :height 160
       :weight 'normal
       :width 'normal)
    #+END_SRC
