@@ -412,6 +412,17 @@
         (add-to-list 'company-backends 'company-bibtex))
      #+END_SRC
 
+*** Unicode Math Rendering
+
+    Render common math symbols in unicode, for easy notation in unicode-supporting code.
+
+   #+BEGIN_SRC emacs-lisp
+   (use-package xah-math-input
+      :ensure t
+      :init
+      (add-hook 'emacs-startup-hook 'xah-math-input-mode))
+   #+END_SRC
+
 *** Docker
 
 **** Dockerfile Mode
@@ -496,7 +507,9 @@
           "<down>" 'evil-numbers/dec-at-pt
           "<left>" 'evil-window-left
           "<right>" 'evil-window-right
-          "l"       'fc-eval-and-replace) ; See Utility Functions section
+          "l"       'fc-eval-and-replace ; See Utility Functions section
+          "u"       'xah-math-input-change-to-symbol
+          )
        (evil-leader/set-leader "<SPC>"))
     #+END_SRC
 
@@ -614,6 +627,7 @@
 
    #+BEGIN_SRC emacs-lisp
     (set-language-environment "UTF-8")
+    (set-default-coding-systems 'utf-8)
    #+END_SRC
 
    Yes/no is so verbose. Answer questions with y/n.
